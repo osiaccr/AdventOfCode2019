@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#define INF 1 << 29
 
 using namespace std;
 
@@ -8,7 +9,7 @@ ifstream fin ("date.in");
 
 string s;
 
-int Max;
+int Min = INF;
 
 char to_Upper (char x) {
     if (x >= 'a' and x <= 'z') {
@@ -21,42 +22,44 @@ bool is_Upper (char x) {
     return !(x >= 'a' and x <= 'z');
 }
 
-int reduce (string s) {
+int reduce (string _s) {
     bool ok = true;
 
     while (ok) {
         ok = false;
-        for (int i = 1; i < s.size (); ++ i) {
-            if (to_Upper(s[i]) == to_Upper(s[i - 1])
+        for (int i = 1; i < _s.size (); ++ i) {
+            if (to_Upper(_s[i]) == to_Upper(_s[i - 1])
             and
-            (( is_Upper (s[i]) and !is_Upper (s[i - 1]) )
-             or ( !is_Upper (s[i]) and is_Upper(s[i - 1]) )
+            (( is_Upper (_s[i]) and !is_Upper (_s[i - 1]) )
+             or ( !is_Upper (_s[i]) and is_Upper(_s[i - 1]) )
              ) ) {
-                s.erase (s.begin () + (i - 1), s.begin () + (i + 1));
+                _s.erase (_s.begin () + (i - 1), _s.begin () + (i + 1));
                 ok = true;
                 break;
             }
         }
     }
 
-    return s.size ();
+    return _s.size ();
 }
 
 int main () {
     fin >> s;
 
-    for (int letter = 'A'; letter <= 'Z'; ++ letter) {
+    for (char letter = 'A'; letter <= 'Z'; ++ letter) {
+        cout << letter << '\n';
         string new_string = s;
         for (int i = 0; i < new_string.size (); ++ i) {
             if (to_Upper(new_string[i]) == letter) {
                 new_string.erase (new_string.begin () + i, new_string.begin () + (i + 1));
+                -- i;
             }
         }
         int new_size = reduce (new_string);
-        Max = max (Max, new_size);
+        Min = min (Min, new_size);
     }
 
-    cout << Max;
+    cout << Min;
 
     return 0;
 }
