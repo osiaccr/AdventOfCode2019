@@ -2,9 +2,9 @@
 #include <iostream>
 #include <vector>
 #define INF 1 << 29
-#define DEF 500
+#define DEF 1100
 #define NR_INDEX 60
-#define COMP 32
+#define COMP 10000
 
 using namespace std;
 
@@ -22,6 +22,16 @@ int abs (int x) {
     if (x < 0)
         x = -x;
     return x;
+}
+
+int get_dist_to_all (int x, int y) {
+    int dist = 0;
+
+    for (int i = 1; i < Points.size (); ++ i) {
+        dist += abs (x - Points[i].first) + abs (y - Points[i].second);
+    }
+
+    return dist;
 }
 
 int find_closest (int x, int y) {
@@ -56,28 +66,11 @@ int main () {
         Points.push_back ({x, y});
     }
 
+    int sol = 0;
     for (int i = 0; i <= DEF; ++ i) {
         for (int j = 0; j <= DEF; ++ j) {
-            int closest = find_closest (i, j);
-            if (closest == -1)
-                continue;
-
-            IndexPoints[closest].push_back ({i, j});
-
-            if (i == 0 or j == 0 or i == DEF or j == DEF) {
-                Map[closest] = -1;
-                continue;
-            }
-            if (Map[closest] != -1)
-                ++ Map[closest];
-        }
-    }
-
-    int sol = 0;
-    for (int i = 1; i < Points.size (); ++ i) {
-        if (Map[i] != -1) {
-            for (int i = 0; i < IndexPoints[i].size (); ++ i) {
-                SafePoints.p
+            if (get_dist_to_all (i, j) < COMP) {
+                ++ sol;
             }
         }
     }
