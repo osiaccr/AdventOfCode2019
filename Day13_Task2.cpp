@@ -42,7 +42,7 @@ public:
     }
 
     bool operator== (const Cart b) {
-        if (pos == b.pos and orientation == b.orientation and curr_move == b.curr_move)
+        if (pos == b.pos)
             return true;
         return false;
     }
@@ -78,7 +78,7 @@ public:
         }
 
         for (int i = 0; i < Carts.size (); ++ i) {
-            if ((* this) == Carts[i] and !contains (to_delete, Carts[i]))
+            if (((* this) == Carts[i]) and !contains (to_delete, Carts[i]))
                 return i;
         }
 
@@ -157,7 +157,7 @@ bool contains (vector < Cart > v, Cart elem) {
 
 }
 
-ifstream fin ("date.in");
+ifstream fin ("data.in");
 
 int n, m;
 
@@ -192,11 +192,13 @@ int main () {
         for (int i = 0; i < Carts.size (); ++ i) {
             bool is_to_be_deleted = contains (to_delete, Carts[i]);
 
+            Cart * debug = & Carts[i];
+
             if (is_to_be_deleted == false) {
                 int result = Carts[i].make_move (Carts, to_delete);
 
                 if (result != -1) {
-                    cout << Carts[i].pos.first << " " << Carts[i].pos.second << " colides with" << Carts[i].pos.first << " " << Carts[i].pos.second;
+                    cout << Carts[i].pos.first << " " << Carts[i].pos.second << " colides with " << Carts[i].pos.first << " " << Carts[i].pos.second << "\n";
                     to_delete.push_back (Carts[i]);
                     to_delete.push_back (Carts[result]);
                 }
@@ -216,6 +218,7 @@ int main () {
         cout << "--------------------\n";*/
     }
 
+    cout << Carts[0].pos.first << " " << Carts[0].pos.second;
+
     return 0;
 }
-
